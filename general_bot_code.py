@@ -1,9 +1,36 @@
-import nextcord 
+
+
 from nextcord import Interaction, SlashOption
 from nextcord.ext import commands
 from token_ import token
-import datetime
 from SQL_bot_function import insert_table
+import threading
+import time
+from bot_function import date_difference
+from SQL_bot_function import create_table_todo, del_in_data
+import sqlite3
+
+
+def dif_in_data():
+    while True:
+        conn = sqlite3.connect('user_date.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM user_date")
+        records = cursor.fetchall()
+        conn.close()
+
+        for i in records:
+            print("s")
+            if date_difference(i[-1]) == 'null':
+                del_in_data(i[0])
+                print('Ы')
+        time.sleep(60)
+
+
+
+infinite_thread = threading.Thread(target=dif_in_data)
+infinite_thread.start()
+
 bot = commands.Bot()
 guild_id_ = 1011627983410303046 # Сюда надо ввести id дс сервера
 @bot.event
@@ -25,3 +52,7 @@ async def test(interaction: Interaction,
     insert_table(str(User_id),str(msg),str(data))
 
 bot.run(token)
+
+
+
+
