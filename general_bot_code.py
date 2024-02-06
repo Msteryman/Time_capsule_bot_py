@@ -1,5 +1,4 @@
 
-
 from nextcord import Interaction, SlashOption
 from nextcord.ext import commands
 from token_ import token
@@ -11,8 +10,16 @@ from SQL_bot_function import create_table_todo, del_in_data
 import sqlite3
 
 
+
 def dif_in_data():
+    a = False
+    user_id = ''
+    msg = ''
     while True:
+        if a == True:
+            async def send_message(user_id, message):
+                await user_id.send(message)
+            a = False
         conn = sqlite3.connect('user_date.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM user_date")
@@ -23,7 +30,9 @@ def dif_in_data():
             print("s")
             if date_difference(i[-1]) == 'null':
                 del_in_data(i[0])
-                print('Ы')
+                a = True
+                user_id = i[1]
+                msg = i[2]
         time.sleep(60)
 
 
@@ -44,12 +53,15 @@ async def on_ready():
 @bot.slash_command( name = 'time_capsule', description="Отпраляет сообщения в будущая ",guild_ids=[guild_id_ ]) # создания слешь команды time_capsule
 async def test(interaction: Interaction,
                 msg: str = SlashOption(description="введите сообщения которая вы хотите прислать себе в будущая ") ,
-                data: str = SlashOption(description="Укажите дату в виде ГГГГ.ММДД чч:мм:cc 'в 24 часовом формате' ") , 
+                data: str = SlashOption(description="Укажите дату в виде ГГГГ.ММ.ДД чч:мм:cc 'в 24 часовом формате' ") , 
                 ): 
     
     User_id = interaction.user 
     print(User_id)
     insert_table(str(User_id),str(msg),str(data))
+
+
+                
 
 bot.run(token)
 
