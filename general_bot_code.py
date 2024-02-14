@@ -10,6 +10,7 @@ from bot_function import date_difference
 from SQL_bot_function import create_table_todo, del_in_data
 import sqlite3
 import asyncio
+from time_zone_data import dict_time_zone
 
 bot = commands.Bot()
 def dif_in_data(): # создания бесконечного цыкла для перебора Данных в sql таблице
@@ -51,7 +52,7 @@ async def on_ready():
 async def test(interaction: Interaction,
                 msg: str = SlashOption(description="введите сообщения которая вы хотите прислать себе в будущая ") ,
                 data: str = SlashOption(description="Укажите дату в виде ГГГГ.ММ.ДД чч:мм:cc в 24 часовом формате' "), 
-                time_zon: int =  SlashOption(choices = {'23кпваааааааааааааааааааааааааааааааааааааааааааааааааааа': 12, "2": 32} , description="Укажите часовой поес по UTC Вводите только число плюсов не надо. 'По умалчанию равно UTC + 0'"), 
+                time_zon: str =  SlashOption(choices = dict_time_zone, description="Укажите часовой поес по UTC Вводите только число плюсов не надо. 'По умалчанию равно UTC + 0'"), 
                 ): 
     print(time_zon)
     User_id = interaction.user
@@ -61,6 +62,7 @@ async def test(interaction: Interaction,
         date_difference(str(data))
         insert_table(int(User_id),str(msg),str(data)) # отправляет id сообщения и дату 
         await interaction.response.send_message('Сообщения успешно принято.')
+        print(int(time_zon))
     except ValueError:
         await interaction.response.send_message('Ты вел что-то не так. проверь правильность написания даты  ')
 
