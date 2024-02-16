@@ -1,8 +1,7 @@
-
+import os
 from nextcord import Interaction, SlashOption # Импорты
 import nextcord
 from nextcord.ext import commands
-from token_ import token
 from SQL_bot_function import insert_table
 import threading
 import time
@@ -11,6 +10,7 @@ from SQL_bot_function import create_table_todo, del_in_data
 import sqlite3
 import asyncio
 from time_zone_data import dict_time_zone
+
 
 bot = commands.Bot()
 def dif_in_data(): # создания бесконечного цыкла для перебора Данных в sql таблице
@@ -40,7 +40,7 @@ infinite_thread.start()
 bot = commands.Bot()
 guild_id_ = 1011627983410303046 # Сюда надо ввести id дс сервера
 @bot.event
-
+  
 
 async def on_ready():
     print(f'Logged in as {bot.user.name} ({bot.user.id})') # Дает понять что бот заработал 
@@ -60,7 +60,7 @@ async def test(interaction: Interaction,
     print(User_id)
     try:
         date_difference(str(data))
-        insert_table(int(User_id),str(msg),str(data)) # отправляет id сообщения и дату 
+        insert_table(int(User_id),str(msg),str(data),str(time_zon)) # отправляет id сообщения и дату 
         await interaction.response.send_message('Сообщения успешно принято.')
         print(int(time_zon))
     except ValueError:
@@ -70,7 +70,8 @@ async def test(interaction: Interaction,
 
 
 # Обработчик нажатия на кнопку
-
+token = os.getenv('TOKEN')
+print(token)
 bot.run(token)
 
 

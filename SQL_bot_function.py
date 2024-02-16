@@ -15,16 +15,17 @@ def create_table_todo(): # Создание таблицы при запуске
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         User_id INTEGER,
         msg text,   
-        date text
+        date text,
+        UTS text
     )""")
     conn.commit()
     conn.close()
 
-def insert_table(User_id: str, msg: str, date: str): # Создание функция для добавления в таблицу 
+def insert_table(User_id: str, msg: str, date: str, UTS: str): # Создание функция для добавления в таблицу 
     """Добавляет инфу о юзере в таблицу"""
     conn = sqlite3.connect('user_date.db')
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO user_date(User_id, msg, date) VALUES(?,?,?)", (User_id, msg, date))
+    cursor.execute("INSERT INTO user_date(User_id, msg, date, UTS) VALUES(?,?,?,?)", (User_id, msg, date, UTS))
     conn.commit()
     conn.close()
 
