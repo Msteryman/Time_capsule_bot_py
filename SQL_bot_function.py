@@ -1,12 +1,6 @@
 
-
 import sqlite3
-
 from bot_function import date_difference
-
-
-
-
 def create_table_todo(): # Создание таблицы при запуске скрипта
     
     conn = sqlite3.connect('user_date.db')
